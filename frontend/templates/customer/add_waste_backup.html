@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add Waste | WasteTrade</title>
+  <style>
+    :root { --green:#167347; --deep:#105b36; --ink:#1d3025; --muted:#62746a; --line:#dbe9df; --light:#f0faf3; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:#f7fbf8; color:var(--ink); font-family:"Segoe UI",Arial,sans-serif; line-height:1.55; }
+    a { color:var(--green); text-decoration:none; }
+    .header { background:#fff; border-bottom:1px solid var(--line); padding:15px max(18px,calc((100vw - 1150px)/2)); display:flex; justify-content:space-between; align-items:center; gap:12px; }
+    .logo { font-size:26px; font-weight:800; white-space:nowrap; }
+    .nav { display:flex; gap:15px; flex-wrap:wrap; font-weight:650; font-size:14px; }
+    .container { max-width:1150px; margin:32px auto 70px; padding:0 16px; }
+    .heading h1 { font-size:29px; margin:0 0 6px; }
+    .heading p { color:var(--muted); margin:0 0 24px; }
+    .layout { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr); gap:20px; align-items:start; }
+    .card { background:white; border:1px solid var(--line); border-radius:18px; padding:24px; box-shadow:0 6px 24px #173b2108; margin-bottom:20px; }
+    h2 { margin:0 0 7px; font-size:21px; }
+    .hint { margin:0 0 20px; color:var(--muted); font-size:14px; }
+    .field { margin:0 0 17px; }
+    .field label { display:block; font-weight:650; margin-bottom:6px; }
+    .input, input[type="text"],input[type="number"],select,textarea { width:100%; min-height:47px; border-radius:10px; padding:10px 12px; border:1px solid #cbdccf; background:#fff; font:inherit; font-size:15px; }
+    textarea { resize:vertical; }
+    .input:focus,input:focus,select:focus,textarea:focus { outline:2px solid #b9e4c8; border-color:var(--green); }
+    .errorlist { color:#ac2929; font-size:13px; margin:6px 0 0; padding-left:18px; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; padding:12px 18px; border:0; border-radius:10px; background:var(--green); color:white; font-weight:700; font:inherit; cursor:pointer; text-decoration:none; }
+    .btn:hover { background:var(--deep); color:white; }
+    .btn.secondary { background:#e7f4ec; color:var(--deep); }
+    .btn.secondary:hover { background:#d5eddf; }
+    .btn.danger { background:#fff4f3; color:#ad3030; border:1px solid #f1cdca; padding:8px 11px; }
+    .btn.danger:hover { background:#fce7e5; }
+    .btn.full { width:100%; }
+    .alert { border-radius:11px; padding:12px 16px; margin-bottom:16px; background:#e8f6ee; color:#145a38; border:1px solid #cbe8d5; }
+    .alert.error { background:#fff0ef; border-color:#edc3be; color:#a52d2d; }
+    .rate-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+    .rate { display:flex; justify-content:space-between; gap:7px; padding:9px; background:#f5faf6; border-radius:8px; font-size:12px; }
+    .rate strong { color:var(--green); white-space:nowrap; }
+    .basket-empty { text-align:center; padding:30px 8px; color:var(--muted); }
+    .basket-row { border-top:1px solid var(--line); padding:15px 0; }
+    .basket-row:first-of-type { border-top:0; }
+    .basket-top { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+    .basket-title { font-weight:750; }
+    .basket-desc { color:var(--muted); font-size:13px; margin-top:4px; }
+    .basket-actions { display:flex; gap:9px; align-items:center; margin-top:10px; }
+    .basket-actions form { margin:0; }
+    .price { color:var(--green); font-weight:800; white-space:nowrap; }
+    .total { border-top:1px solid var(--line); margin-top:14px; padding-top:15px; display:flex; justify-content:space-between; gap:10px; align-items:center; }
+    .total strong { font-size:22px; color:var(--green); }
+    .note { font-size:12px; color:var(--muted); margin:11px 0 0; }
+    .bottom { margin-top:15px; }
+    .section-number { background:#e9f6ee; color:var(--green); padding:4px 9px; border-radius:9px; font-weight:800; font-size:13px; margin-right:8px; }
+    @media (max-width:800px) { .layout { grid-template-columns:1fr; } .header { padding:14px 16px; } }
+    @media (max-width:500px) { .container { margin-top:22px; } .card { padding:18px; } .rate-list { grid-template-columns:1fr; } .logo { font-size:21px; } .nav { gap:9px; font-size:12px; } .heading h1 { font-size:25px; } }
+      
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a class="logo" href="{% url 'customer_dashboard_preview' %}">♻ WasteTrade</a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="{% url 'customer_dashboard_preview' %}">Dashboard</a>
+      <a href="{% url 'my_listings' %}">My Listings</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="heading">
+      <h1>Add Your Waste</h1>
+      <p>Add different waste items to your basket, then submit one pickup request.</p>
+    </div>
+
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'error' %}error{% endif %}" role="status">{{ message }}</div>
+    {% endfor %}
+
+    <div class="layout">
+      <div>
+        <section class="card">
+          <h2><span class="section-number">1</span>{% if edit_item %}Edit Waste Item{% else %}Add Waste Item{% endif %}</h2>
+          <p class="hint">Choose a category/type, estimated weight and condition.</p>
+          <form method="post" action="{% url 'add_waste_preview' %}">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="{% if edit_item %}edit_item{% else %}add_item{% endif %}">
+            {% if edit_item %}<input type="hidden" name="item_id" value="{{ edit_item.id }}">{% endif %}
+
+            {% for field in item_form %}
+              <div class="field">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {{ field.errors }}
+              </div>
+            {% endfor %}
+            {{ item_form.non_field_errors }}
+            <button type="submit" class="btn">{% if edit_item %}Save Changes{% else %}+ Add to Basket{% endif %}</button>
+            {% if edit_item %}<a class="btn secondary" href="{% url 'add_waste_preview' %}">Cancel Edit</a>{% endif %}
+          </form>
+        </section>
+
+        <section class="card">
+          <h2>Reference Prices</h2>
+          <p class="hint">Admin-managed demo rates. Final amount depends on verified pickup weight and quality.</p>
+          {% if rates %}
+            <div class="rate-list">
+              {% for rate in rates %}
+                <div class="rate"><span>{{ rate.get_waste_type_display }}</span><strong>₹{{ rate.price_per_kg }}/kg</strong></div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="hint">No rates added yet. Run the setup command below before adding waste.</p>
+          {% endif %}
+
+<p class="hint">
+    <strong>Condition-based estimated pricing:</strong>
+    <br>
+    Clean / Dry — 100% of reference rate
+    <br>
+    Mixed — 80% of reference rate
+    <br>
+    Damaged / Used — 60% of reference rate
+    <br>
+    <small>
+        Final amount will depend on verified
+        weight and waste condition at pickup.
+    </small>
+</p>
+
+        </section>
+      </div>
+
+      <div>
+        <section class="card" id="basket">
+          <h2><span class="section-number">2</span>My Waste Basket</h2>
+          <p class="hint">Items save as a draft. You can edit or remove them before final submission.</p>
+          {% for item in draft_items %}
+            <div class="basket-row">
+              <div class="basket-top">
+                <div>
+                  <div class="basket-title">{{ item.get_waste_type_display }}</div>
+                  <div class="basket-desc">{{ item.estimated_weight }} kg · {{ item.get_condition_display }} · ₹{{ item.rate_per_kg }}/kg</div>
+                </div>
+                <span class="price">₹{{ item.estimated_amount }}</span>
+              </div>
+              <div class="basket-actions">
+                <a href="{% url 'add_waste_preview' %}?edit={{ item.id }}" class="btn secondary">Edit</a>
+                <form method="post" action="{% url 'add_waste_preview' %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="action" value="remove_item">
+                  <input type="hidden" name="item_id" value="{{ item.id }}">
+                  <button type="submit" class="btn danger">Remove</button>
+                </form>
+              </div>
+            </div>
+          {% empty %}
+            <div class="basket-empty">🧺<p>Basket empty. Add your first waste item.</p></div>
+          {% endfor %}
+
+          <div class="total"><span>Estimated Total Weight</span><strong>{{ draft.estimated_weight|default:'0' }} kg</strong></div>
+          <div class="total"><span>Estimated Total Value</span><strong>₹{{ draft.estimated_amount|default:'0' }}</strong></div>
+          <p class="note">Estimates are not a confirmed payment. Dealer pays offline after pickup and final weight confirmation.</p>
+        </section>
+
+        <section class="card" id="pickup">
+          <h2><span class="section-number">3</span>Pickup Details</h2>
+          <p class="hint">Your exact address is kept private from unassigned dealers.</p>
+          <form method="post" action="{% url 'add_waste_preview' %}">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="submit_listing">
+            {% for field in pickup_form %}
+              <div class="field">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {{ field.errors }}
+              </div>
+            {% endfor %}
+            {{ pickup_form.non_field_errors }}
+            <button type="submit" class="btn full" {% if not draft_items %}disabled style="opacity:.55;cursor:not-allowed;"{% endif %}>
+              Submit Pickup Request
+            </button>
+          </form>
+          <p class="note">No online payment is collected. Dealer acceptance and scheduling will be connected in the next module.</p>
+        </section>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
