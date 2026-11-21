@@ -1,0 +1,339 @@
+
+/* WASTETRADE DJANGO ADMIN THEME */
+
+:root,
+html[data-theme="dark"],
+html[data-theme="auto"] {
+    --primary: #167347;
+    --secondary: #105b36;
+    --accent: #ffffff;
+    --header-color: #ffffff;
+    --body-bg: #f6faf7;
+    --body-fg: #203127;
+    --darkened-bg: #eef7f1;
+    --selected-bg: #e4f5e9;
+    --border-color: #dce9df;
+    --link-fg: #167347;
+    --link-hover-color: #105b36;
+    --button-bg: #167347;
+    --button-hover-bg: #105b36;
+    --default-button-bg: #167347;
+    --default-button-hover-bg: #105b36;
+}
+
+/* HEADER */
+
+#header {
+    background: white;
+    border-bottom: 1px solid #e1ece5;
+    padding: 16px 25px;
+    color: #203127;
+}
+
+#site-name a {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 25px;
+    font-weight: 800;
+    color: #17362a;
+}
+
+.wt-brand-icon,
+.wt-brand-green {
+    color: #167347;
+}
+
+#site-name small {
+    margin-left: 14px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #738579;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+#user-tools,
+#user-tools a {
+    color: #167347;
+}
+
+/* MAIN PAGE */
+
+body {
+    background: #f6faf7;
+}
+
+body.dashboard #nav-sidebar,
+body.dashboard #toggle-nav-sidebar {
+    display: none;
+}
+
+body.dashboard #content {
+    width: auto;
+    max-width: 1450px;
+    padding: 28px;
+    margin: auto;
+}
+
+body.dashboard #content-main {
+    width: 100%;
+    float: none;
+}
+
+.wt-dashboard {
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #203127;
+}
+
+.wt-welcome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 32px;
+    background: linear-gradient(
+        110deg,
+        #e4f6ea,
+        #f8fdf9
+    );
+    border: 1px solid #d2e9da;
+    border-radius: 19px;
+    margin-bottom: 29px;
+}
+
+.wt-eyebrow {
+    font-size: 12px;
+    color: #167347;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.wt-welcome h1 {
+    font-size: clamp(25px, 3vw, 35px);
+    margin: 12px 0;
+    color: #143626;
+    font-weight: 800;
+}
+
+.wt-welcome p {
+    font-size: 15px;
+    color: #587062;
+    margin: 0;
+    line-height: 1.7;
+}
+
+.wt-main-button {
+    display: inline-block;
+    background: #167347;
+    color: white !important;
+    border-radius: 10px;
+    padding: 13px 19px;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.wt-main-button:hover {
+    background: #105b36;
+}
+
+/* SECTION HEADINGS */
+
+.wt-section-heading {
+    margin-bottom: 20px;
+}
+
+.wt-section-heading h2 {
+    margin: 0 0 5px;
+    font-size: 23px;
+    color: #1d3025;
+}
+
+.wt-section-heading p {
+    margin: 0;
+    color: #687b70;
+    font-size: 14px;
+}
+
+/* DASHBOARD CARDS */
+
+.wt-admin-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 17px;
+    margin-bottom: 25px;
+}
+
+.wt-admin-card {
+    padding: 24px;
+    border-radius: 17px;
+    background: white;
+    border: 1px solid #e1ece5;
+    box-shadow: 0 5px 20px #173b2109;
+    text-decoration: none !important;
+    transition: transform .2s, box-shadow .2s;
+}
+
+.wt-admin-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px #173b2114;
+}
+
+.wt-card-icon {
+    width: 56px;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    border-radius: 15px;
+    font-size: 28px;
+    margin-bottom: 21px;
+}
+
+.wt-card-icon.green {
+    background: #e1f6e9;
+}
+
+.wt-card-icon.orange {
+    background: #fff2dd;
+}
+
+.wt-card-icon.blue {
+    background: #e3f3ff;
+}
+
+.wt-card-icon.purple {
+    background: #eee8ff;
+}
+
+.wt-admin-card h3 {
+    font-size: 17px;
+    margin: 0 0 10px;
+    color: #203127;
+}
+
+.wt-admin-card p {
+    color: #687b70;
+    font-size: 13px;
+    line-height: 1.7;
+    min-height: 66px;
+}
+
+.wt-card-link {
+    display: inline-block;
+    color: #167347;
+    font-weight: 700;
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+/* QUICK ACTIONS */
+
+.wt-admin-panel {
+    background: white;
+    padding: 27px;
+    border-radius: 18px;
+    border: 1px solid #e1ece5;
+}
+
+.wt-quick-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.wt-quick-grid > a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-radius: 12px;
+    padding: 17px;
+    background: #f3faf5;
+    border: 1px solid #e5f1e9;
+    text-decoration: none !important;
+}
+
+.wt-quick-grid > a:hover {
+    background: #e5f5eb;
+}
+
+.wt-quick-grid > a > span {
+    width: 45px;
+    height: 45px;
+    border-radius: 11px;
+    background: #dff1e6;
+    display: grid;
+    place-items: center;
+    font-size: 25px;
+    color: #167347;
+    flex-shrink: 0;
+}
+
+.wt-quick-grid strong,
+.wt-quick-grid small {
+    display: block;
+}
+
+.wt-quick-grid strong {
+    color: #203127;
+    font-size: 14px;
+}
+
+.wt-quick-grid small {
+    color: #687b70;
+    font-size: 12px;
+}
+
+.wt-quick-grid b {
+    margin-left: auto;
+    color: #167347;
+    font-size: 18px;
+}
+
+.wt-admin-footer {
+    text-align: center;
+    margin-top: 29px;
+    color: #829188;
+    font-size: 12px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1200px) {
+    .wt-admin-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    body.dashboard #content {
+        padding: 15px;
+    }
+
+    #header {
+        padding: 13px;
+    }
+
+    .wt-welcome {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 22px;
+    }
+
+    .wt-admin-grid,
+    .wt-quick-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .wt-admin-card p {
+        min-height: auto;
+    }
+
+    .wt-admin-panel {
+        padding: 19px;
+    }
+
+    #site-name small {
+        display: none;
+    }
+}

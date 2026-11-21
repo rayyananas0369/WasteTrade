@@ -1,0 +1,23 @@
+
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}
+    {{ title }} | WasteTrade Management
+{% endblock %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet"
+          href="{% static 'css/wastetrade_admin.css' %}">
+{% endblock %}
+
+{% block branding %}
+    <h1 id="site-name">
+        <a href="{% url 'admin:index' %}">
+            <span class="wt-brand-icon">♻</span>
+            <span>Waste<span class="wt-brand-green">Trade</span></span>
+            <small>Management</small>
+        </a>
+    </h1>
+{% endblock %}

@@ -1,0 +1,335 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | WasteTrade</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/admin_dashboard.css' %}">
+</head>
+
+<body>
+<div class="admin-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <a href="{% url 'admin_dashboard' %}"
+           class="brand">
+            <span>♻</span> WasteTrade
+            <small>ADMIN PORTAL</small>
+        </a>
+
+        <div class="sidebar-label">MANAGEMENT</div>
+
+        <nav class="sidebar-nav">
+
+            <a class="active"
+               href="{% url 'admin_dashboard' %}">
+                <span>▦</span> Overview
+            </a>
+
+            <a href="{% url 'admin:auth_user_changelist' %}">
+                <span>♙</span> All Users
+            </a>
+
+            <a href="{% url 'admin:core_userprofile_changelist' %}">
+                <span>✓</span> Dealer Approvals
+            </a>
+
+            <a href="{% url 'admin:core_wasterate_changelist' %}">
+                <span>₹</span> Waste Rates
+            </a>
+
+            <a href="{% url 'admin:core_wastelisting_changelist' %}">
+                <span>▤</span> Waste Requests
+            </a>
+
+        </nav>
+
+        <div class="sidebar-label">GENERAL</div>
+
+        <nav class="sidebar-nav">
+
+            <a href="{% url 'admin:index' %}">
+                <span>⚙</span> Django Management
+            </a>
+
+            <a href="{% url 'home' %}">
+                <span>⌂</span> View Website
+            </a>
+
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="admin-avatar">A</div>
+            <div>
+                <strong>{{ request.user.username }}</strong>
+                <small>Administrator</small>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">WASTETRADE MANAGEMENT</p>
+                <h1>Admin Dashboard</h1>
+                <p class="subtitle">
+                    Monitor recycling requests, dealers,
+                    users and waste prices.
+                </p>
+            </div>
+
+            <form method="post"
+                  action="{% url 'admin:logout' %}">
+                {% csrf_token %}
+                <button class="logout-button" type="submit">
+                    Log Out
+                </button>
+            </form>
+        </header>
+
+        <!-- SUMMARY CARDS -->
+        <section class="stats-grid">
+
+            <a class="stat-card"
+               href="{% url 'admin:core_userprofile_changelist' %}">
+                <div class="stat-top">
+                    <span class="stat-icon green">👥</span>
+                    <span class="stat-tag">Users</span>
+                </div>
+                <p>Total Customers</p>
+                <strong>{{ total_customers }}</strong>
+                <span class="stat-link">Manage users →</span>
+            </a>
+
+            <a class="stat-card"
+               href="{% url 'admin:core_userprofile_changelist' %}">
+                <div class="stat-top">
+                    <span class="stat-icon orange">⏳</span>
+                    <span class="stat-tag">Approval</span>
+                </div>
+                <p>Pending Dealers</p>
+                <strong>{{ pending_dealer_count }}</strong>
+                <span class="stat-link">Review dealers →</span>
+            </a>
+
+            <a class="stat-card"
+               href="{% url 'admin:core_wastelisting_changelist' %}">
+                <div class="stat-top">
+                    <span class="stat-icon blue">🚚</span>
+                    <span class="stat-tag">Requests</span>
+                </div>
+                <p>Waste Listings</p>
+                <strong>{{ total_listings }}</strong>
+                <span class="stat-link">View requests →</span>
+            </a>
+
+            <a class="stat-card"
+               href="{% url 'admin:core_wasterate_changelist' %}">
+                <div class="stat-top">
+                    <span class="stat-icon purple">₹</span>
+                    <span class="stat-tag">Pricing</span>
+                </div>
+                <p>Active Waste Rates</p>
+                <strong>{{ active_rates }}</strong>
+                <span class="stat-link">Manage prices →</span>
+            </a>
+
+        </section>
+
+        <!-- LOWER SECTIONS -->
+        <div class="content-grid">
+
+            <!-- PENDING DEALERS -->
+            <section class="panel">
+
+                <div class="panel-heading">
+                    <div>
+                        <h2>Pending Dealer Approvals</h2>
+                        <p>Dealers waiting for verification</p>
+                    </div>
+
+                    <a href="{% url 'admin:core_userprofile_changelist' %}">
+                        View All →
+                    </a>
+                </div>
+
+                {% for dealer in pending_dealers %}
+
+                <div class="dealer-row">
+                    <div class="dealer-avatar">🏪</div>
+
+                    <div class="dealer-info">
+                        <strong>
+                            {{ dealer.shop_name|default:"New Dealer" }}
+                        </strong>
+
+                        <small>
+                            {{ dealer.user.email }}
+                        </small>
+
+                        <small>
+                            {{ dealer.service_area }}
+                        </small>
+                    </div>
+
+                    <a class="small-button"
+                       href="{% url 'admin:core_userprofile_change' dealer.id %}">
+                        Review
+                    </a>
+                </div>
+
+                {% empty %}
+
+                <div class="empty-state">
+                    <span>✅</span>
+                    <p>No dealer approvals pending.</p>
+                </div>
+
+                {% endfor %}
+
+            </section>
+
+            <!-- QUICK ACTIONS -->
+            <section class="panel">
+
+                <div class="panel-heading">
+                    <div>
+                        <h2>Quick Actions</h2>
+                        <p>Manage WasteTrade easily</p>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+
+                    <a href="{% url 'admin:core_wasterate_add' %}">
+                        <span class="quick-icon">₹</span>
+                        <div>
+                            <strong>Add Waste Rate</strong>
+                            <small>Set reference prices</small>
+                        </div>
+                        <span class="arrow">→</span>
+                    </a>
+
+                    <a href="{% url 'admin:core_userprofile_changelist' %}">
+                        <span class="quick-icon">✓</span>
+                        <div>
+                            <strong>Verify Dealers</strong>
+                            <small>Review registrations</small>
+                        </div>
+                        <span class="arrow">→</span>
+                    </a>
+
+                    <a href="{% url 'admin:core_wastelisting_changelist' %}">
+                        <span class="quick-icon">🚚</span>
+                        <div>
+                            <strong>Waste Requests</strong>
+                            <small>Review submitted listings</small>
+                        </div>
+                        <span class="arrow">→</span>
+                    </a>
+
+                    <a href="{% url 'admin:auth_user_changelist' %}">
+                        <span class="quick-icon">♙</span>
+                        <div>
+                            <strong>Manage Accounts</strong>
+                            <small>View registered users</small>
+                        </div>
+                        <span class="arrow">→</span>
+                    </a>
+
+                </div>
+
+            </section>
+        </div>
+
+        <!-- RECENT REQUESTS -->
+        <section class="panel recent-panel">
+
+            <div class="panel-heading">
+                <div>
+                    <h2>Recent Waste Requests</h2>
+                    <p>Latest customer pickup submissions</p>
+                </div>
+
+                <a href="{% url 'admin:core_wastelisting_changelist' %}">
+                    View All →
+                </a>
+            </div>
+
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Request</th>
+                            <th>Customer</th>
+                            <th>Area</th>
+                            <th>Estimated Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for listing in recent_listings %}
+
+                        <tr>
+                            <td>
+                                <a href="{% url 'admin:core_wastelisting_change' listing.id %}">
+                                    #{{ listing.id }}
+                                </a>
+                            </td>
+
+                            <td>
+                                {{ listing.customer.first_name }}
+                            </td>
+
+                            <td>{{ listing.pickup_area }}</td>
+
+                            <td>₹{{ listing.estimated_amount }}</td>
+
+                            <td>
+                                <span class="status">
+                                    {{ listing.get_status_display }}
+                                </span>
+                            </td>
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+                            <td colspan="5" class="empty-table">
+                                No waste requests submitted yet.
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+        <footer class="footer">
+            <span>
+                WasteTrade © 2026
+            </span>
+
+            <span>
+                {{ total_dealers }} approved dealers ·
+                {{ pending_listings }} pending requests
+            </span>
+        </footer>
+
+    </main>
+</div>
+</body>
+</html>

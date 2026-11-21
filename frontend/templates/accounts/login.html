@@ -1,0 +1,315 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Login | WasteTrade</title>
+
+    <style>
+        :root {
+            --green: #167347;
+            --dark-green: #105b36;
+            --ink: #202d26;
+            --muted: #647067;
+            --border: #dce9e1;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #f0faf3;
+            color: var(--ink);
+            font-family: "Segoe UI", Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--green);
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 35px 16px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 465px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 12px 35px #123a2010;
+        }
+
+        .back-link {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .heading {
+            margin: 22px 0 28px;
+            text-align: center;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 29px;
+            font-weight: 800;
+            color: var(--green);
+        }
+
+        .logo span {
+            font-size: 30px;
+        }
+
+        .heading h1 {
+            margin: 20px 0 7px;
+            font-size: 28px;
+        }
+
+        .heading p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .field input {
+            width: 100%;
+            min-height: 51px;
+            padding: 13px 14px;
+            border: 1px solid #d5dfd8;
+            border-radius: 11px;
+            background: #ffffff;
+            font-size: 16px;
+        }
+
+        .field input:focus {
+            outline: 2px solid #bce5ca;
+            border-color: var(--green);
+        }
+
+        .forgot-link {
+            display: block;
+            margin: -5px 0 22px;
+            text-align: right;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .error {
+            margin-bottom: 20px;
+            padding: 14px;
+            border: 1px solid #edb9b9;
+            border-radius: 11px;
+            color: #a52a2a;
+            background: #fff1f1;
+            font-size: 14px;
+        }
+
+        .login-button {
+            width: 100%;
+            min-height: 52px;
+            border: 0;
+            border-radius: 11px;
+            background: var(--green);
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .login-button:hover {
+            background: var(--dark-green);
+        }
+
+        .signup-text {
+            margin: 24px 0 0;
+            text-align: center;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .signup-text a {
+            font-weight: 700;
+        }
+
+        .notice {
+            margin-top: 22px;
+            padding: 13px;
+            border: 1px solid #cfe9d8;
+            border-radius: 11px;
+            background: #f0faf3;
+            font-size: 13px;
+            color: #42614e;
+            text-align: center;
+        }
+
+        .admin-note {
+            margin-top: 16px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        @media (max-width: 500px) {
+            .login-page {
+                padding: 16px 12px;
+                align-items: flex-start;
+            }
+
+            .login-card {
+                padding: 25px 20px;
+            }
+
+            .logo {
+                font-size: 25px;
+            }
+
+            .heading h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<main class="login-page">
+
+    <section class="login-card">
+
+        <a href="{% url 'home' %}"
+           class="back-link">
+            ← Back to Home
+        </a>
+
+        <div class="heading">
+
+            <a href="{% url 'home' %}"
+               class="logo">
+
+                <span aria-hidden="true">♻</span>
+                WasteTrade
+
+            </a>
+
+            <h1>Welcome Back!</h1>
+
+            <p>
+                Login to manage your waste
+                and recycling activities.
+            </p>
+
+        </div>
+
+        {% if error %}
+            <div class="error" role="alert">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <!-- REAL DJANGO LOGIN FORM -->
+
+        <form method="POST"
+              action="{% url 'login' %}">
+
+            {% csrf_token %}
+
+            <div class="field">
+
+                <label for="email">
+                    Email Address
+                </label>
+
+                <input type="email"
+                       id="email"
+                       name="email"
+                       value="{{ email }}"
+                       placeholder="Enter registered email"
+                       autocomplete="username"
+                       maxlength="150"
+                       required>
+
+            </div>
+
+            <div class="field">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input type="password"
+                       id="password"
+                       name="password"
+                       placeholder="Enter your password"
+                       autocomplete="current-password"
+                       required>
+
+            </div>
+
+            <a href="{% url 'forgot_password' %}"
+               class="forgot-link">
+                Forgot Password? (Preview)
+            </a>
+
+            <button type="submit"
+                    class="login-button">
+                Login
+            </button>
+
+        </form>
+
+        <p class="signup-text">
+            Don't have an account?
+            <a href="{% url 'signup' %}">
+                Create Account
+            </a>
+        </p>
+
+        <div class="notice">
+            <strong>Customer:</strong>
+            Login after successful registration.
+            <br>
+            <strong>Dealer:</strong>
+            Login after Admin approval.
+        </div>
+
+       
+
+    </section>
+
+</main>
+
+</body>
+</html>

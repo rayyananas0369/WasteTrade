@@ -1,0 +1,241 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard | WasteTrade</title>
+    <style>
+        :root { --green:#087b43; --deep:#075b33; --ink:#172638; --muted:#607085; --line:#e6ede9; --pale:#f0faf3; }
+        * { box-sizing:border-box; }
+        html { scroll-behavior:smooth; scroll-padding-top:85px; }
+        body { margin:0; font-family:"Segoe UI",Arial,sans-serif; color:var(--ink); background:#f8fcf9; }
+        a { text-decoration:none; color:inherit; }
+        .wt-header { height:72px; background:#fff; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; padding:0 26px; position:sticky; top:0; z-index:30; }
+        .wt-logo { display:flex; align-items:center; gap:9px; font-size:26px; font-weight:800; letter-spacing:-.7px; color:#132533; white-space:nowrap; }
+        .wt-logo .mark { color:var(--green); font-size:33px; line-height:1; }
+        .wt-logo .green { color:var(--green); }
+        .wt-user { display:flex; align-items:center; gap:11px; }
+        .wt-avatar { width:40px; height:40px; border-radius:50%; background:#e8f2ed; display:grid; place-items:center; font-size:22px; }
+        .wt-user strong { display:block; font-size:14px; }
+        .wt-user small { color:var(--muted); }
+        .wt-preview { padding:6px 10px; border:1px solid #cde5d5; color:var(--deep); background:#f4fbf6; border-radius:100px; font-size:11px; font-weight:700; }
+        .wt-shell { display:grid; grid-template-columns:220px minmax(0,1fr); min-height:calc(100vh - 72px); }
+        .wt-sidebar { background:#fff; border-right:1px solid var(--line); padding:22px 14px; }
+        .wt-sidebar nav { display:grid; gap:5px; position:sticky; top:94px; }
+        .wt-sidebar a { padding:14px 15px; border-radius:11px; display:flex; align-items:center; gap:11px; font-size:14px; font-weight:600; }
+        .wt-sidebar a:hover,.wt-sidebar a.active { color:var(--deep); background:#e2f4e8; }
+        .wt-sidebar .nav-icon { width:25px; text-align:center; font-size:19px; }
+        .wt-sidebar hr { width:90%; border:0; border-top:1px solid var(--line); margin:16px auto; }
+        .wt-sidebar .preview-hint { color:var(--muted); font-size:12px; line-height:1.6; padding:22px 14px; }
+        .wt-main { width:min(1200px,100%); margin:0 auto; padding:24px 25px 70px; min-width:0; }
+        .wt-hero { min-height:208px; border-radius:17px; overflow:hidden; border:1px solid #d9eee1; background-color:#e9f9ef; background-image:linear-gradient(90deg,#e8f8ed 0%,#e8f8ed 34%,rgba(232,248,237,.88) 47%,rgba(232,248,237,0) 70%),url("{% static 'images/customer_dashboard_hero.png' %}"); background-size:cover,auto 100%; background-position:center,right center; background-repeat:no-repeat; display:flex; align-items:center; padding:30px 36px; }
+        .wt-hero-copy { max-width:420px; position:relative; z-index:1; }
+        .wt-hero h1 { margin:0 0 9px; font-size:clamp(29px,3.5vw,39px); line-height:1.1; letter-spacing:-1.3px; color:#07482c; }
+        .wt-hero p { margin:0; max-width:330px; font-size:16px; line-height:1.55; }
+        .wt-stats { margin:16px 0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+        .wt-stat { background:#fff; border:1px solid var(--line); border-radius:15px; box-shadow:0 5px 18px #0c5e2608; padding:20px; display:flex; align-items:center; gap:15px; }
+        .wt-round { width:59px; height:59px; flex:0 0 59px; border-radius:50%; display:grid; place-items:center; font-size:27px; background:#e4f7ec; }
+        .wt-round.blue { background:#e6f5ff; }
+        .wt-round.gold { background:#fff3d7; }
+        .wt-stat .stat-name { font-size:13px; color:#536577; }
+        .wt-stat strong { display:block; font-size:26px; line-height:1.5; }
+        .wt-stat a { color:var(--green); font-size:12px; font-weight:700; }
+        .wt-panel { background:#fff; border:1px solid var(--line); border-radius:15px; padding:19px; box-shadow:0 4px 18px #174e2707; min-width:0; }
+        .wt-panel h2 { margin:0; font-size:20px; letter-spacing:-.4px; }
+        .wt-panel-top { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:15px; }
+        .wt-panel-top a { font-size:13px; font-weight:700; color:var(--green); }
+        .wt-actions { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+        .wt-action { background:#eefaf2; padding:18px 11px; text-align:center; border-radius:13px; min-height:158px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:9px; }
+        .wt-action.blue { background:#edf8ff; }
+        .wt-action.gold { background:#fff8e7; }
+        .wt-action.purple { background:#f3efff; }
+        .wt-action .bubble { background:#d8f4e4; border-radius:50%; height:55px; width:55px; display:grid; place-items:center; font-size:26px; }
+        .wt-action.blue .bubble { background:#d9eefe; }
+        .wt-action.gold .bubble { background:#fff0c3; }
+        .wt-action.purple .bubble { background:#e6dfff; }
+        .wt-action strong { font-size:15px; }
+        .wt-action span:last-child { font-size:12px; color:#526579; line-height:1.5; }
+        .wt-two { display:grid; grid-template-columns:1.25fr .9fr; gap:14px; margin-top:15px; align-items:start; }
+        .wt-table { width:100%; border-collapse:collapse; font-size:13px; }
+        .wt-table th { background:#f1f6f4; color:#475b69; font-size:12px; font-weight:600; text-align:left; padding:12px 9px; }
+        .wt-table th:first-child { border-radius:8px 0 0 8px; }
+        .wt-table th:last-child { border-radius:0 8px 8px 0; }
+        .wt-table td { border-bottom:1px solid #eef2ef; padding:13px 9px; vertical-align:middle; }
+        .wt-table tbody tr:last-child td { border-bottom:0; }
+        .wt-product { display:flex; gap:9px; align-items:center; font-weight:600; }
+        .wt-photo { height:42px; width:42px; flex:0 0 42px; border-radius:10px; background:#eef5f0; display:grid; place-items:center; font-size:26px; }
+        .wt-status { display:inline-block; background:#dcf7e7; color:#006b37; border-radius:99px; padding:6px 10px; font-size:12px; font-weight:700; white-space:nowrap; }
+        .wt-status.blue { background:#e0f2ff; color:#146eb0; }
+        .wt-status.gold { background:#fff2d0; color:#975400; }
+        .wt-pickup { border:1px solid #e4ede8; border-radius:12px; overflow:hidden; font-size:13px; }
+        .wt-pickup-head { background:#e8f8ef; padding:15px; font-size:15px; font-weight:700; color:#184b35; }
+        .wt-pickup-detail { display:grid; grid-template-columns:83px 1fr; gap:11px; padding:9px 13px; }
+        .wt-pickup-detail span:first-child { color:#617385; }
+        .wt-track { display:block; margin:12px; text-align:center; border:1px solid #078346; color:#087b43; border-radius:9px; padding:11px; font-size:14px; font-weight:700; }
+        .wt-small-panels { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:15px; }
+        .wt-mini { display:flex; gap:13px; align-items:center; justify-content:space-between; }
+        .wt-mini div { flex:1; }
+        .wt-mini h2 { margin-bottom:5px; }
+        .wt-mini p { margin:0; color:var(--muted); font-size:13px; line-height:1.5; }
+        .wt-mini .mini-button { padding:9px 12px; border:1px solid #078346; border-radius:9px; font-size:12px; font-weight:700; color:var(--green); white-space:nowrap; }
+        .wt-footnote { color:#687b70; font-size:12px; line-height:1.6; margin:19px 0 0; }
+        .wt-mobile-nav { display:none; }
+        @media (max-width:1100px) {
+            .wt-shell { grid-template-columns:185px minmax(0,1fr); }
+            .wt-sidebar a { font-size:13px; padding:12px 9px; }
+            .wt-main { padding:20px 17px 75px; }
+            .wt-hero { padding:25px; }
+            .wt-stat { padding:16px 12px; gap:11px; }
+            .wt-round { width:48px; height:48px; flex-basis:48px; }
+        }
+        @media (max-width:850px) {
+            .wt-sidebar { display:none; }
+            .wt-shell { display:block; }
+            .wt-header { height:65px; padding:0 16px; }
+            .wt-logo { font-size:22px; }
+            .wt-logo .mark { font-size:28px; }
+            .wt-main { padding:16px 13px 100px; }
+            .wt-mobile-nav { display:grid; grid-template-columns:repeat(5,1fr); gap:2px; position:fixed; bottom:0; left:0; right:0; z-index:40; background:#fff; border-top:1px solid #dfe9e3; padding:8px max(5px,env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)); box-shadow:0 -5px 20px #073b1a0d; }
+            .wt-mobile-nav a { text-align:center; font-size:10px; color:#3b4e5e; display:grid; gap:3px; justify-items:center; padding:3px 0; }
+            .wt-mobile-nav a span { font-size:22px; }
+            .wt-mobile-nav a.active { color:var(--green); font-weight:700; }
+        }
+        @media (max-width:600px) {
+            .wt-user .wt-preview,.wt-user .user-label { display:none; }
+            .wt-user .wt-avatar { height:34px; width:34px; font-size:18px; }
+            .wt-hero { min-height:185px; padding:20px 16px; background-image:linear-gradient(90deg,#e8f8ed 0%,rgba(232,248,237,.94) 40%,rgba(232,248,237,.12) 100%),url("{% static 'images/customer_dashboard_hero.png' %}"); background-size:cover,auto 100%; }
+            .wt-hero-copy { max-width:65%; }
+            .wt-hero h1 { font-size:clamp(24px,7vw,32px); }
+            .wt-hero p { font-size:12px; }
+            .wt-stats { grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+            .wt-stat { padding:13px; gap:9px; }
+            .wt-stat:last-child { grid-column:1 / -1; }
+            .wt-round { width:41px; height:41px; flex-basis:41px; font-size:20px; }
+            .wt-stat .stat-name { font-size:11px; }
+            .wt-stat strong { font-size:20px; }
+            .wt-stat a { font-size:11px; }
+            .wt-panel { padding:15px; }
+            .wt-panel h2 { font-size:17px; }
+            .wt-actions { grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+            .wt-action { min-height:123px; padding:12px 8px; gap:5px; }
+            .wt-action .bubble { width:43px; height:43px; font-size:23px; }
+            .wt-action strong { font-size:13px; }
+            .wt-action span:last-child { font-size:11px; }
+            .wt-two,.wt-small-panels { grid-template-columns:1fr; gap:12px; }
+            .wt-table { font-size:12px; }
+            .wt-table td,.wt-table th { padding:10px 5px; }
+            .wt-table th:nth-child(3),.wt-table td:nth-child(3) { display:none; }
+            .wt-photo { height:34px; width:34px; flex-basis:34px; font-size:19px; }
+            .wt-status { font-size:10px; padding:6px 7px; }
+        }
+        @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
+
+        .wt-logout-btn { border:1px solid #e5c7c4; border-radius:9px; padding:8px 13px; color:#a63329; background:#fff; font:inherit; font-size:13px; font-weight:750; cursor:pointer; }
+        .wt-logout-btn:hover { background:#fff1f0; }
+        .wt-action { color:inherit; }
+        .wt-action:hover { box-shadow:0 6px 18px #123a2010; transform:translateY(-1px); }
+    </style>
+</head>
+<body>
+    <header class="wt-header">
+        <a href="{% url 'home' %}" class="wt-logo"><span class="mark" aria-hidden="true">♻</span><span><span class="green">Waste</span>Trade</span></a>
+        <div class="wt-user">
+            <span class="wt-avatar" aria-hidden="true">👤</span>
+            <span class="user-label"><strong>{{ request.user.first_name }} {{ request.user.last_name }}</strong><small>Customer</small></span>
+            <form method="post" action="{% url 'logout' %}" style="margin:0">{% csrf_token %}<button type="submit" class="wt-logout-btn">Logout</button></form>
+        </div>
+    </header>
+
+    <div class="wt-shell">
+        <aside class="wt-sidebar" aria-label="Customer dashboard navigation">
+            <nav>
+                <a href="#overview" class="active"><span class="nav-icon">⌂</span>Dashboard</a>
+                <a href="{% url 'add_waste_preview' %}"><span class="nav-icon">⊕</span>Add Waste</a>
+                <a href="{% url 'add_waste_preview' %}#basket"><span class="nav-icon">▣</span>My Waste Basket</a>
+                <a href="{% url 'my_listings' %}"><span class="nav-icon">☷</span>My Listings</a>
+                <a href="#pickup"><span class="nav-icon">🚚</span>Pickup Tracking</a>
+                <a href="#payments"><span class="nav-icon">▤</span>My Payments</a>
+                <hr>
+                <a href="#price-guide"><span class="nav-icon">₹</span>Price Guide</a>
+                <a href="#report-issue"><span class="nav-icon">♧</span>Report an Issue</a>
+                <a href="#profile"><span class="nav-icon">👤</span>Profile</a>
+                <a href="{% url 'home' %}"><span class="nav-icon">⌂</span>Back to Home</a>
+                <div class="preview-hint">Pickup, payments and notifications are coming next.</div>
+            </nav>
+        </aside>
+
+        <main id="overview" class="wt-main">
+            <section class="wt-hero" aria-label="Dashboard welcome">
+                <div class="wt-hero-copy">
+                    <h1>Turn Your Waste<br>Into Value</h1>
+                    <p>List your recyclable waste, get a fair price, and schedule a pickup. A cleaner home, a greener tomorrow.</p>
+                </div>
+            </section>
+
+            <section class="wt-stats" aria-label="Overview statistics">
+                <article class="wt-stat"><div class="wt-round" aria-hidden="true">▣</div><div><span class="stat-name">Total Listings</span><strong>{{ total_listings }}</strong><a href="{% url 'my_listings' %}">View all →</a></div></article>
+                <article class="wt-stat"><div class="wt-round blue" aria-hidden="true">🚚</div><div><span class="stat-name">Pending Requests</span><strong>{{ pending_listings }}</strong><a href="{% url 'my_listings' %}">View details →</a></div></article>
+                <article class="wt-stat"><div class="wt-round gold" aria-hidden="true">🧺</div><div><span class="stat-name">Draft Basket Items</span><strong>{{ draft_item_count }}</strong><a href="{% url 'add_waste_preview' %}#basket">View basket →</a></div></article>
+            </section>
+
+            <section id="quick-actions" class="wt-panel">
+                <div class="wt-panel-top"><h2>Quick Actions</h2></div>
+                <div class="wt-actions">
+                    <a href="{% url 'add_waste_preview' %}" class="wt-action"><span class="bubble" aria-hidden="true">➕</span><strong>Add Waste</strong><span>List your recyclable items</span></a>
+                    <a href="{% url 'add_waste_preview' %}#basket" class="wt-action blue"><span class="bubble" aria-hidden="true">🧺</span><strong>My Waste Basket</strong><span>Review items before listing</span></a>
+                    <a href="{% url 'my_listings' %}" class="wt-action gold"><span class="bubble" aria-hidden="true">☷</span><strong>My Listings</strong><span>View your waste requests</span></a>
+                    <a href="#pickup" class="wt-action purple"><span class="bubble" aria-hidden="true">🚚</span><strong>Pickup Tracking</strong><span>Coming next</span></a>
+                </div>
+            </section>
+
+            <div class="wt-two">
+                <section id="listings" class="wt-panel">
+                    <div class="wt-panel-top"><h2>Recent Listings</h2><a href="{% url 'my_listings' %}">View all →</a></div>
+                    <table class="wt-table">
+                        <thead><tr><th>Item</th><th>Quantity</th><th>Estimated Value</th><th>Status</th></tr></thead>
+                        <tbody>
+                          {% for listing in recent_listings %}
+                            <tr>
+                              <td><span class="wt-product"><span class="wt-photo" aria-hidden="true">♻</span>Request #{{ listing.id }}</span></td>
+                              <td>{{ listing.estimated_weight }} kg</td>
+                              <td>₹{{ listing.estimated_amount }}</td>
+                              <td><span class="wt-status gold">{{ listing.get_status_display }}</span></td>
+                            </tr>
+                          {% empty %}
+                            <tr><td colspan="4">No submitted listings yet. <a href="{% url 'add_waste_preview' %}">Add waste</a>.</td></tr>
+                          {% endfor %}
+                        </tbody>
+                    </table>
+                </section>
+                <section id="pickup" class="wt-panel">
+                    <div class="wt-panel-top"><h2>Pickup Tracking</h2><a href="{% url 'my_listings' %}">My Listings →</a></div>
+                    <div class="wt-pickup">
+                        <div class="wt-pickup-head">🚚 &nbsp;Pickup scheduling — Coming Next</div>
+                        <p>Once a dealer accepts your request, pickup date, collector and verified weight will appear here.</p>
+                        <a href="{% url 'my_listings' %}" class="wt-track">View My Listings</a>
+                    </div>
+                </section>
+            </div>
+
+            <section class="wt-small-panels">
+                <div id="price-guide" class="wt-panel wt-mini"><span class="wt-round gold" aria-hidden="true">₹</span><div><h2>Price Guide</h2><p>Check current prices for recyclable waste.</p></div><span class="mini-button">Coming Soon</span></div>
+                <div id="report-issue" class="wt-panel wt-mini"><span class="wt-round" aria-hidden="true">☏</span><div><h2>Report an Issue</h2><p>Need help with pickup, weight or payment?</p></div><span class="mini-button">Coming Soon</span></div>
+            </section>
+            <section class="wt-small-panels">
+                <div id="payments" class="wt-panel wt-mini"><span class="wt-round gold" aria-hidden="true">💳</span><div><h2>My Payments</h2><p>Cash or UPI payment records will appear here after pickup.</p></div><span class="mini-button">Coming Soon</span></div>
+                <div id="profile" class="wt-panel wt-mini"><span class="wt-round" aria-hidden="true">👤</span><div><h2>My Profile</h2><p>{{ request.user.first_name }} {{ request.user.last_name }} · {{ request.user.email }}</p></div><span class="mini-button">Your Account</span></div>
+            </section>
+            <p class="wt-footnote">Listing counts and recent requests are now loaded from your account. Pickup scheduling and payment confirmation are not yet implemented.</p>
+        </main>
+    </div>
+
+    <nav class="wt-mobile-nav" aria-label="Mobile customer navigation">
+        <a href="#overview" class="active"><span aria-hidden="true">⌂</span>Home</a>
+        <a href="{% url 'add_waste_preview' %}"><span aria-hidden="true">⊕</span>Add Waste</a>
+        <a href="{% url 'my_listings' %}"><span aria-hidden="true">☷</span>My Listings</a>
+        <a href="#payments"><span aria-hidden="true">▤</span>Payments</a>
+        <a href="#profile"><span aria-hidden="true">👤</span>Profile</a>
+    </nav>
+</body>
+</html>

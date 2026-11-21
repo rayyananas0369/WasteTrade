@@ -1,0 +1,338 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Sign Up | WasteTrade</title>
+
+    <style>
+        :root {
+            --green: #167347;
+            --dark-green: #105b36;
+            --text: #202d26;
+            --muted: #647067;
+            --border: #e1ece5;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f0faf3;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a {
+            color: var(--green);
+            text-decoration: none;
+        }
+
+        .signup-page {
+            min-height: 100vh;
+            padding: 35px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .signup-card {
+            width: 100%;
+            max-width: 500px;
+            padding: 35px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: white;
+            box-shadow: 0 12px 35px #123a2010;
+        }
+
+        .back-link {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .heading {
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .heading .logo {
+            color: var(--green);
+            font-size: 29px;
+            font-weight: 800;
+        }
+
+        .heading h1 {
+            margin: 15px 0 8px;
+            font-size: 26px;
+        }
+
+        .heading p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .role-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .role {
+            padding: 14px;
+            text-align: center;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            font-weight: 700;
+        }
+
+        .role.active {
+            border-color: var(--green);
+            background: #e5f5ea;
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .field input {
+            width: 100%;
+            min-height: 48px;
+            padding: 12px 14px;
+            border: 1px solid #d5dfd8;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        .field input:focus {
+            outline: 2px solid #bce5ca;
+            border-color: var(--green);
+        }
+
+        .errorlist {
+            margin: 7px 0 0;
+            padding-left: 18px;
+            color: #b42318;
+            font-size: 13px;
+        }
+
+        .hint {
+            margin: 7px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .submit-button {
+            width: 100%;
+            min-height: 50px;
+            padding: 13px;
+            border: 0;
+            border-radius: 11px;
+            background: var(--green);
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background: var(--dark-green);
+        }
+
+        .notice {
+            padding: 13px;
+            margin-bottom: 20px;
+            background: #eff9f2;
+            border-radius: 10px;
+            color: #315b41;
+            font-size: 13px;
+        }
+
+        .footer-text {
+            margin: 22px 0 0;
+            text-align: center;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        @media (max-width: 500px) {
+            .signup-page {
+                align-items: flex-start;
+                padding: 15px 12px;
+            }
+
+            .signup-card {
+                padding: 23px 18px;
+            }
+
+            .heading .logo {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<main class="signup-page">
+
+    <section class="signup-card">
+
+        <a href="{% url 'home' %}" class="back-link">
+            ← Back to Home
+        </a>
+
+        <div class="heading">
+            <a href="{% url 'home' %}" class="logo">
+                ♻ WasteTrade
+            </a>
+
+            <h1>Create Your Account</h1>
+
+            <p>
+                Join WasteTrade and start recycling.
+            </p>
+        </div>
+
+        <!-- CUSTOMER / DEALER SELECTION -->
+
+        <div class="role-options">
+
+            <a href="{% url 'signup' %}?type=customer"
+               class="role {% if role == 'customer' %}active{% endif %}">
+                Customer
+            </a>
+
+            <a href="{% url 'signup' %}?type=dealer"
+               class="role {% if role == 'dealer' %}active{% endif %}">
+                Dealer
+            </a>
+
+        </div>
+
+        {% if role == "dealer" %}
+        <div class="notice">
+            Dealer accounts require Admin approval
+            before they can log in.
+        </div>
+        {% endif %}
+
+        <!-- SIGNUP FORM -->
+
+        <form method="POST"
+              action="{% url 'signup' %}">
+
+            {% csrf_token %}
+            {{ form.role }}
+            {{ form.role.errors }}
+
+            <div class="field">
+                <label for="{{ form.full_name.id_for_label }}">
+                    Full Name
+                </label>
+
+                {{ form.full_name }}
+                {{ form.full_name.errors }}
+            </div>
+
+            {% if role == "dealer" %}
+
+            <div class="field">
+                <label for="{{ form.shop_name.id_for_label }}">
+                    Shop / Business Name
+                </label>
+
+                {{ form.shop_name }}
+                {{ form.shop_name.errors }}
+            </div>
+
+            <div class="field">
+                <label for="{{ form.service_area.id_for_label }}">
+                    Service Area
+                </label>
+
+                {{ form.service_area }}
+                {{ form.service_area.errors }}
+            </div>
+
+            {% endif %}
+
+            <div class="field">
+                <label for="{{ form.phone.id_for_label }}">
+                    Phone Number
+                </label>
+
+                {{ form.phone }}
+                {{ form.phone.errors }}
+            </div>
+
+            <div class="field">
+                <label for="{{ form.email.id_for_label }}">
+                    Email Address
+                </label>
+
+                {{ form.email }}
+                {{ form.email.errors }}
+            </div>
+
+            <div class="field">
+                <label for="{{ form.password1.id_for_label }}">
+                    Password
+                </label>
+
+                {{ form.password1 }}
+                {{ form.password1.errors }}
+
+                <p class="hint">
+                    Minimum 8 characters.
+                
+                </p>
+            </div>
+
+            <div class="field">
+                <label for="{{ form.password2.id_for_label }}">
+                    Confirm Password
+                </label>
+
+                {{ form.password2 }}
+                {{ form.password2.errors }}
+            </div>
+
+            {{ form.non_field_errors }}
+
+            <button type="submit"
+                    class="submit-button">
+                Create Account
+            </button>
+
+        </form>
+
+        <p class="footer-text">
+            Already have an account?
+            <a href="{% url 'login' %}">
+                Login
+            </a>
+        </p>
+
+    </section>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,1455 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Waste | WasteTrade</title>
+
+<style>
+:root {
+    --green: #087b43;
+    --deep: #075b33;
+    --ink: #172d23;
+    --muted: #68796e;
+    --bg: #f5faf7;
+    --line: #dce9e0;
+    --pale: #eaf8ef;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: var(--deep);
+}
+
+button, input, select, textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* HEADER */
+
+.header {
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.header-inner {
+    max-width: 1250px;
+    min-height: 74px;
+    margin: auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 800;
+    color: var(--green);
+}
+
+.nav {
+    display: flex;
+    gap: 10px;
+}
+
+.nav a {
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.nav a:hover,
+.nav a.active {
+    background: var(--pale);
+}
+
+/* MAIN LAYOUT */
+
+.container {
+    max-width: 1250px;
+    margin: auto;
+    padding: 30px 24px 70px;
+}
+
+.breadcrumb {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 18px;
+}
+
+.breadcrumb a {
+    font-weight: 700;
+}
+
+/* HERO */
+
+.hero {
+    background: linear-gradient(
+        110deg,
+        #e4f6ea,
+        #f6fcf8
+    );
+    border: 1px solid #d2eadb;
+    border-radius: 20px;
+    padding: 32px;
+    margin-bottom: 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.hero h1 {
+    margin: 0 0 9px;
+    font-size: clamp(28px, 3vw, 38px);
+    color: #075b33;
+}
+
+.hero p {
+    margin: 0;
+    color: #597264;
+    max-width: 650px;
+}
+
+.hero-icon {
+    height: 90px;
+    width: 90px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    background: #d7f1e0;
+    border-radius: 50%;
+    font-size: 45px;
+}
+
+/* STEPS */
+
+.steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 13px;
+    padding: 15px;
+}
+
+.step-number {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: #e4f5ea;
+    color: var(--deep);
+    font-weight: 800;
+}
+
+.step:first-child {
+    border-color: #aad8b9;
+}
+
+.step:first-child .step-number {
+    background: var(--green);
+    color: white;
+}
+
+.step strong {
+    display: block;
+    font-size: 14px;
+}
+
+.step small {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* TWO COLUMN LAYOUT */
+
+.layout {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1.15fr)
+        minmax(330px, .85fr);
+    gap: 22px;
+    align-items: start;
+}
+
+.column {
+    display: grid;
+    gap: 20px;
+    min-width: 0;
+}
+
+/* CARDS */
+
+.card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 26px;
+    box-shadow: 0 6px 25px #153a2308;
+}
+
+.card-heading {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 23px;
+}
+
+.card-icon {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    background: var(--pale);
+    border-radius: 13px;
+    font-size: 23px;
+}
+
+.card h2 {
+    margin: 0;
+    font-size: 21px;
+}
+
+.subtitle {
+    margin: 5px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* FORMS */
+
+.field {
+    margin-bottom: 19px;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.field input,
+.field select,
+.field textarea {
+    width: 100%;
+    max-width: 100%;
+    min-height: 49px;
+    padding: 12px 14px;
+    border: 1px solid #ccdcd1;
+    background: white;
+    border-radius: 11px;
+    color: var(--ink);
+    font-size: 15px;
+}
+
+.field textarea {
+    min-height: 95px;
+    resize: vertical;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+    outline: 2px solid #bfe6cc;
+    border-color: var(--green);
+}
+
+.errorlist {
+    color: #b42318;
+    font-size: 13px;
+    padding-left: 20px;
+    margin: 7px 0;
+}
+
+/* BUTTONS */
+
+.btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 49px;
+    padding: 12px 21px;
+    border: 1px solid var(--green);
+    border-radius: 11px;
+    background: var(--green);
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.btn:hover {
+    background: var(--deep);
+    color: white;
+}
+
+.btn:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+.btn-light {
+    background: #edf8f1;
+    color: var(--deep);
+    border-color: #d4e9db;
+}
+
+.btn-light:hover {
+    background: #dcefe3;
+    color: var(--deep);
+}
+
+.btn-danger {
+    min-height: 37px;
+    padding: 8px 13px;
+    background: #fff4f3;
+    color: #b3332d;
+    border-color: #efcfcb;
+    font-size: 12px;
+}
+
+.btn-danger:hover {
+    background: #ffe8e5;
+    color: #b3332d;
+}
+
+.btn-full {
+    width: 100%;
+}
+
+/* LIVE PRICE PREVIEW */
+
+.price-preview {
+    background: #e9f8ee;
+    border: 1px solid #c9e8d3;
+    border-radius: 14px;
+    padding: 19px;
+    margin-bottom: 19px;
+}
+
+.price-preview-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.price-preview span,
+.price-preview small {
+    color: #54715d;
+    font-size: 12px;
+}
+
+.price-preview strong {
+    display: block;
+    margin: 8px 0;
+    font-size: 29px;
+    color: var(--deep);
+}
+
+#adjusted-rate {
+    font-weight: 700;
+}
+
+/* REFERENCE RATES */
+
+.rates-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 10px;
+}
+
+.rate-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 13px;
+    background: #f6faf7;
+    border: 1px solid #e4ede7;
+    border-radius: 10px;
+}
+
+.rate-row span {
+    font-size: 12px;
+    color: #496052;
+}
+
+.rate-row strong {
+    font-size: 13px;
+    white-space: nowrap;
+    color: var(--green);
+}
+
+.condition-rules {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+}
+
+.condition-rules h3 {
+    margin: 0 0 12px;
+    font-size: 14px;
+}
+
+.condition-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.condition-badges span {
+    padding: 8px 11px;
+    background: #eaf7ee;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--deep);
+}
+
+.note {
+    color: var(--muted);
+    font-size: 12px;
+    margin: 12px 0 0;
+}
+
+/* BASKET ITEMS */
+
+.basket-item {
+    padding: 17px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.basket-top {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.item-icon {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 11px;
+    background: #eaf7ef;
+    font-size: 23px;
+}
+
+.item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.item-info strong {
+    display: block;
+    font-size: 14px;
+}
+
+.item-info small {
+    color: var(--muted);
+    font-size: 12px;
+    display: block;
+    margin-top: 5px;
+}
+
+.item-amount {
+    color: var(--green);
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.item-actions {
+    display: flex;
+    gap: 9px;
+    flex-wrap: wrap;
+    margin-top: 13px;
+}
+
+.item-actions form {
+    margin: 0;
+}
+
+.basket-empty {
+    text-align: center;
+    padding: 35px 10px;
+    color: var(--muted);
+}
+
+.basket-empty span {
+    display: block;
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+/* BASKET TOTAL */
+
+.basket-summary {
+    background: #edf9f1;
+    border: 1px solid #d0e8d8;
+    border-radius: 14px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 11px 0;
+}
+
+.summary-row + .summary-row {
+    border-top: 1px solid #d5e9dc;
+}
+
+.summary-row strong {
+    color: var(--deep);
+    font-size: 20px;
+}
+
+.summary-row:last-child strong {
+    font-size: 26px;
+}
+
+/* PICKUP */
+
+.pickup-notice {
+    background: #f0faf3;
+    border-left: 4px solid #6fc18f;
+    border-radius: 9px;
+    padding: 13px;
+    margin-bottom: 20px;
+    color: #44634e;
+    font-size: 13px;
+}
+
+/* MESSAGES */
+
+.alert {
+    margin-bottom: 18px;
+    padding: 14px 17px;
+    background: #e8f6ed;
+    border: 1px solid #bfdfca;
+    border-radius: 11px;
+    color: var(--deep);
+    font-size: 14px;
+}
+
+.alert.error {
+    background: #fff0ef;
+    color: #a52d2d;
+    border-color: #edc3be;
+}
+
+/* MOBILE RESPONSIVE */
+
+@media (max-width: 980px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .container {
+        max-width: 760px;
+    }
+}
+
+@media (max-width: 700px) {
+    .header-inner {
+        padding: 0 14px;
+        min-height: 65px;
+    }
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .nav {
+        gap: 3px;
+    }
+
+    .nav a {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .container {
+        padding: 18px 13px 50px;
+    }
+
+    .hero {
+        padding: 24px 20px;
+    }
+
+    .hero-icon {
+        display: none;
+    }
+
+    .steps {
+        gap: 7px;
+    }
+
+    .step {
+        padding: 10px 8px;
+        gap: 6px;
+    }
+
+    .step-number {
+        width: 27px;
+        height: 27px;
+        font-size: 12px;
+    }
+
+    .step strong {
+        font-size: 11px;
+    }
+
+    .step small {
+        display: none;
+    }
+
+    .card {
+        padding: 20px 17px;
+    }
+
+    .rates-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 380px) {
+    .nav a {
+        font-size: 11px;
+        padding: 6px;
+    }
+
+    .basket-top {
+        flex-wrap: wrap;
+    }
+}
+
+/* PICKUP STEP */
+
+[hidden] {
+    display: none !important;
+}
+
+.continue-area {
+    margin-top: 20px;
+}
+
+.continue-area .btn {
+    font-size: 15px;
+}
+
+#pickup,
+#basket {
+    scroll-margin-top: 95px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header class="header">
+    <div class="header-inner">
+
+        <a href="{% url 'customer_dashboard_preview' %}"
+           class="logo">
+            ♻ WasteTrade
+        </a>
+
+        <nav class="nav">
+            <a href="{% url 'customer_dashboard_preview' %}">
+                Dashboard
+            </a>
+
+            <a href="{% url 'add_waste_preview' %}"
+               class="active">
+                Add Waste
+            </a>
+
+            <a href="{% url 'my_listings' %}">
+                My Listings
+            </a>
+        </nav>
+
+    </div>
+</header>
+
+<main class="container">
+
+    <!-- BREADCRUMB -->
+
+    <div class="breadcrumb">
+        <a href="{% url 'customer_dashboard_preview' %}">
+            Dashboard
+        </a>
+        &nbsp; › &nbsp; Add Waste
+    </div>
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div>
+            <h1>Add Your Waste</h1>
+
+            <p>
+                Add recyclable waste items, review estimated
+                earnings, and submit a convenient pickup
+                request to local dealers.
+            </p>
+        </div>
+
+        <div class="hero-icon" aria-hidden="true">
+            ♻
+        </div>
+
+    </section>
+
+    <!-- PROGRESS INDICATOR -->
+
+    <div class="steps">
+
+        <div class="step">
+            <span class="step-number">1</span>
+
+            <div>
+                <strong>Add Items</strong>
+                <small>Select waste and weight</small>
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+
+            <div>
+                <strong>Review Basket</strong>
+                <small>Check estimated amount</small>
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+
+            <div>
+                <strong>Request Pickup</strong>
+                <small>Enter pickup details</small>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- DJANGO MESSAGES -->
+
+    {% for message in messages %}
+
+        <div class="alert
+            {% if message.tags == 'error' %}error{% endif %}"
+            role="status">
+
+            {{ message }}
+
+        </div>
+
+    {% endfor %}
+
+    <!-- TWO COLUMN CONTENT -->
+
+    <div class="layout">
+
+        <!-- LEFT COLUMN -->
+
+        <div class="column">
+
+            <!-- ADD WASTE CARD -->
+
+            <section class="card" id="add-item">
+
+                <div class="card-heading">
+                    <div class="card-icon">➕</div>
+
+                    <div>
+                        <h2>
+                            {% if edit_item %}
+                                Edit Waste Item
+                            {% else %}
+                                Add Waste Item
+                            {% endif %}
+                        </h2>
+
+                        <p class="subtitle">
+                            Enter waste type, weight, and condition.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- ADD / EDIT FORM -->
+
+                <form method="post"
+                      action="{% url 'add_waste_preview' %}">
+
+                    {% csrf_token %}
+
+                    <input type="hidden"
+                           name="action"
+                           value="{% if edit_item %}edit_item{% else %}add_item{% endif %}">
+
+                    {% if edit_item %}
+
+                        <input type="hidden"
+                               name="item_id"
+                               value="{{ edit_item.id }}">
+
+                    {% endif %}
+
+                    {% for field in item_form %}
+
+                        <div class="field">
+
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label }}
+                            </label>
+
+                            {{ field }}
+
+                            {{ field.errors }}
+
+                        </div>
+
+                    {% endfor %}
+
+                    {{ item_form.non_field_errors }}
+
+                    <!-- LIVE ESTIMATE -->
+
+                    <div class="price-preview">
+
+                        <div class="price-preview-top">
+                            <span>
+                                Estimated Item Value
+                            </span>
+
+                            <span id="adjusted-rate">
+                                Select a waste type
+                            </span>
+                        </div>
+
+                        <strong id="live-total">
+                            ₹0.00
+                        </strong>
+
+                        <small>
+                            Amount is based on selected
+                            weight and waste condition.
+                        </small>
+
+                    </div>
+
+                    <button type="submit" class="btn">
+
+                        {% if edit_item %}
+                            Save Changes
+                        {% else %}
+                            + Add to Basket
+                        {% endif %}
+
+                    </button>
+
+                    {% if edit_item %}
+
+                        <a href="{% url 'add_waste_preview' %}"
+                           class="btn btn-light">
+
+                            Cancel Edit
+
+                        </a>
+
+                    {% endif %}
+
+                </form>
+
+            </section>
+
+            <!-- REFERENCE PRICES -->
+
+            <section class="card" id="rates">
+
+                <div class="card-heading">
+                    <div class="card-icon">₹</div>
+
+                    <div>
+                        <h2>Reference Prices</h2>
+
+                        <p class="subtitle">
+                            Admin-managed base rates for
+                            clean and dry waste.
+                        </p>
+                    </div>
+                </div>
+
+                {% if rates %}
+
+                    <div class="rates-grid">
+
+                        {% for rate in rates %}
+
+                            <div class="rate-row"
+                                 data-waste-type="{{ rate.waste_type }}"
+                                 data-price="{{ rate.price_per_kg }}">
+
+                                <span>
+                                    {{ rate.get_waste_type_display }}
+                                </span>
+
+                                <strong>
+                                    ₹{{ rate.price_per_kg }}/kg
+                                </strong>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <p class="subtitle">
+                        No active waste rates available.
+                        Please contact the administrator.
+                    </p>
+
+                {% endif %}
+
+                <!-- CONDITION RULES -->
+
+                <div class="condition-rules">
+
+                    <h3>
+                        Condition-Based Estimated Pricing
+                    </h3>
+
+                    <div class="condition-badges">
+
+                        <span>Clean / Dry — 100%</span>
+
+                        <span>Mixed — 80%</span>
+
+                        <span>Damaged / Used — 60%</span>
+
+                    </div>
+
+                    <p class="note">
+                        Final payment depends on verified
+                        weight and condition during pickup.
+                    </p>
+
+                </div>
+
+            </section>
+
+        </div>
+
+        <!-- RIGHT COLUMN -->
+
+        <div class="column">
+
+            <!-- BASKET -->
+
+            <section class="card" id="basket">
+
+                <div class="card-heading">
+                    <div class="card-icon">🧺</div>
+
+                    <div>
+                        <h2>My Waste Basket</h2>
+
+                        <p class="subtitle">
+                            Review, edit, or remove items
+                            before submission.
+                        </p>
+                    </div>
+                </div>
+
+                {% for item in draft_items %}
+
+                    <div class="basket-item">
+
+                        <div class="basket-top">
+
+                            <div class="item-icon">
+                                ♻
+                            </div>
+
+                            <div class="item-info">
+
+                                <strong>
+                                    {{ item.get_waste_type_display }}
+                                </strong>
+
+                                <small>
+                                    {{ item.estimated_weight }} kg
+                                    · {{ item.get_condition_display }}
+                                </small>
+
+                                <small>
+                                    Adjusted price:
+                                    ₹{{ item.rate_per_kg }}/kg
+                                </small>
+
+                            </div>
+
+                            <span class="item-amount">
+                                ₹{{ item.estimated_amount }}
+                            </span>
+
+                        </div>
+
+                        <!-- EDIT / REMOVE -->
+
+                        <div class="item-actions">
+
+                            <a class="btn btn-light"
+                               href="{% url 'add_waste_preview' %}?edit={{ item.id }}#add-item">
+
+                                Edit
+
+                            </a>
+
+                            <form method="post"
+                                  action="{% url 'add_waste_preview' %}">
+
+                                {% csrf_token %}
+
+                                <input type="hidden"
+                                       name="action"
+                                       value="remove_item">
+
+                                <input type="hidden"
+                                       name="item_id"
+                                       value="{{ item.id }}">
+
+                                <button type="submit"
+                                        class="btn btn-danger">
+
+                                    Remove
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                {% empty %}
+
+                    <div class="basket-empty">
+
+                        <span>🧺</span>
+
+                        <strong>
+                            Your basket is empty
+                        </strong>
+
+                        <p>
+                            Add your first recyclable
+                            waste item to begin.
+                        </p>
+
+                    </div>
+
+                {% endfor %}
+
+                <!-- BASKET TOTAL -->
+
+                <div class="basket-summary">
+
+                    <div class="summary-row">
+
+                        <span>
+                            Total Estimated Weight
+                        </span>
+
+                        <strong>
+                            {{ draft.estimated_weight|default:'0' }} kg
+                        </strong>
+
+                    </div>
+
+                    <div class="summary-row">
+
+                        <span>
+                            Total Estimated Value
+                        </span>
+
+                        <strong>
+                            ₹{{ draft.estimated_amount|default:'0' }}
+                        </strong>
+
+                    </div>
+
+                </div>
+          
+<!-- CONTINUE TO PICKUP BUTTON -->
+
+<div class="continue-area">
+
+    <button
+        type="button"
+        id="continue-pickup"
+        class="btn btn-full"
+        aria-controls="pickup"
+        aria-expanded="false"
+        {% if not draft_items %}disabled{% endif %}
+    >
+        Continue to Pickup Details →
+    </button>
+
+    <p class="note">
+        Review your basket before continuing.
+        You can still edit or remove items.
+    </p>
+
+</div>
+
+                <p class="note">
+                    Your items are saved as a draft
+                    until you submit the pickup request.
+                </p>
+
+            </section>
+
+            <!-- PICKUP DETAILS -->
+
+           <section class="card"
+         id="pickup"
+         hidden
+         data-has-errors="{% if pickup_form.errors %}true{% else %}false{% endif %}">
+
+                <div class="card-heading">
+
+                    <div class="card-icon">
+                        🚚
+                    </div>
+
+                    <div>
+                        <h2>Pickup Details</h2>
+
+                        <p class="subtitle">
+                            Enter your collection location
+                            and instructions.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="pickup-notice">
+                    🔒 Your full pickup address is kept
+                    private from dealers before acceptance.
+                </div>
+    
+<!-- BACK TO BASKET -->
+
+<button
+    type="button"
+    id="back-to-basket"
+    class="btn btn-light"
+    style="margin-bottom:20px;"
+>
+    ← Back to Basket
+</button>
+
+                <form method="post"
+                      action="{% url 'add_waste_preview' %}">
+
+                    {% csrf_token %}
+
+                    <input type="hidden"
+                           name="action"
+                           value="submit_listing">
+
+                    {% for field in pickup_form %}
+
+                        <div class="field">
+
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label }}
+                            </label>
+
+                            {{ field }}
+
+                            {{ field.errors }}
+
+                        </div>
+
+                    {% endfor %}
+
+                    {{ pickup_form.non_field_errors }}
+
+                    <button type="submit"
+                            class="btn btn-full"
+                            {% if not draft_items %}disabled{% endif %}>
+
+                        Submit Pickup Request →
+
+                    </button>
+
+                </form>
+
+                <p class="note">
+                    No online payment is collected.
+                    Dealer pays by cash or UPI after
+                    pickup and final verification.
+                </p>
+
+            </section>
+
+        </div>
+
+    </div>
+
+</main>
+
+<!-- LIVE PRICE CALCULATION -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const wasteType = document.querySelector(
+        '[name="waste_type"]'
+    );
+
+    const weightInput = document.querySelector(
+        '[name="estimated_weight"]'
+    );
+
+    const conditionInput = document.querySelector(
+        '[name="condition"]'
+    );
+
+    const liveTotal = document.getElementById(
+        "live-total"
+    );
+
+    const adjustedRate = document.getElementById(
+        "adjusted-rate"
+    );
+
+    if (
+        !wasteType ||
+        !weightInput ||
+        !conditionInput
+    ) {
+        return;
+    }
+
+    // Get admin-managed prices from HTML
+
+    const rates = {};
+
+    document.querySelectorAll(
+        "[data-waste-type][data-price]"
+    ).forEach(function (element) {
+
+        rates[element.dataset.wasteType] =
+            Number(element.dataset.price);
+
+    });
+
+    // Same demo condition factors as Django
+
+    const conditionFactors = {
+        clean_dry: 1.00,
+        mixed: 0.80,
+        damaged: 0.60
+    };
+
+    function calculatePrice() {
+
+        const selectedType = wasteType.value;
+
+        const baseRate = rates[selectedType];
+
+        const weight = Number(weightInput.value);
+
+        const condition = conditionInput.value;
+
+        const multiplier = conditionFactors[condition];
+
+        if (
+            !Number.isFinite(baseRate) ||
+            !Number.isFinite(weight) ||
+            weight <= 0 ||
+            multiplier === undefined
+        ) {
+
+            liveTotal.textContent = "₹0.00";
+
+            adjustedRate.textContent =
+                "Enter valid waste details";
+
+            return;
+        }
+
+        // Round adjusted rate to 2 decimal places
+        const newRate = Math.round(
+            (baseRate * multiplier + Number.EPSILON) * 100
+        ) / 100;
+
+        const total = Math.round(
+            (weight * newRate + Number.EPSILON) * 100
+        ) / 100;
+
+        adjustedRate.textContent =
+            "₹" + newRate.toFixed(2) + "/kg";
+
+        liveTotal.textContent =
+            "₹" + total.toFixed(2);
+    }
+
+    wasteType.addEventListener(
+        "change",
+        calculatePrice
+    );
+
+    weightInput.addEventListener(
+        "input",
+        calculatePrice
+    );
+
+    conditionInput.addEventListener(
+        "change",
+        calculatePrice
+    );
+
+    calculatePrice();
+
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const pickupSection = document.getElementById("pickup");
+    const continueButton = document.getElementById("continue-pickup");
+    const backButton = document.getElementById("back-to-basket");
+    const basketSection = document.getElementById("basket");
+
+    if (
+        !pickupSection ||
+        !continueButton ||
+        !backButton ||
+        !basketSection
+    ) {
+        return;
+    }
+
+    // Show Pickup Details
+    function showPickup() {
+
+        if (continueButton.disabled) {
+            return;
+        }
+
+        pickupSection.hidden = false;
+
+        continueButton.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+
+        pickupSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }
+
+    // Hide Pickup Details and return to Basket
+    function showBasket() {
+
+        pickupSection.hidden = true;
+
+        continueButton.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+        basketSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }
+
+    // Continue button
+    continueButton.addEventListener(
+        "click",
+        showPickup
+    );
+
+    // Back button
+    backButton.addEventListener(
+        "click",
+        showBasket
+    );
+
+    // If Django returns pickup form validation
+    // errors, keep the form visible.
+    if (
+        pickupSection.dataset.hasErrors === "true" ||
+        window.location.hash === "#pickup"
+    ) {
+        showPickup();
+    }
+
+});
+</script>
+
+</body>
+</html>

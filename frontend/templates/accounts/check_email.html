@@ -1,0 +1,218 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Check Your Email | WasteTrade</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/style.css' %}">
+
+    <style>
+        /* CHECK EMAIL PAGE */
+
+        .email-page {
+            min-height: 100vh;
+            background: #f0faf3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px;
+        }
+
+        .email-card {
+            width: 100%;
+            max-width: 480px;
+            padding: 42px 35px;
+            border-radius: 22px;
+            background: #ffffff;
+            border: 1px solid #e1ece5;
+            box-shadow: 0 15px 40px rgba(19, 75, 43, 0.08);
+            text-align: center;
+        }
+
+        .email-logo {
+            display: inline-block;
+            color: #167347;
+            font-size: 25px;
+            font-weight: 800;
+            margin-bottom: 30px;
+        }
+
+        .email-icon {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #e0f4e7;
+            font-size: 42px;
+        }
+
+        .email-card h1 {
+            margin: 0 0 14px;
+            color: #202d26;
+            font-size: 30px;
+            line-height: 1.25;
+        }
+
+        .email-description {
+            color: #647067;
+            font-size: 15px;
+            line-height: 1.8;
+            margin: 0 0 25px;
+        }
+
+        .email-notice {
+            background: #f0faf3;
+            border: 1px solid #cbe9d5;
+            border-radius: 12px;
+            padding: 17px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .email-notice strong {
+            display: block;
+            color: #105b36;
+            font-size: 15px;
+            margin-bottom: 7px;
+        }
+
+        .email-notice p {
+            margin: 0;
+            color: #476452;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .email-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 50px;
+            padding: 12px;
+            border-radius: 12px;
+            background: #167347;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .email-button:hover {
+            background: #105b36;
+        }
+
+        .email-secondary {
+            display: inline-block;
+            margin-top: 22px;
+            color: #167347;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .email-footer {
+            margin-top: 28px;
+            color: #7a8a80;
+            font-size: 12px;
+        }
+
+        @media (max-width: 500px) {
+            .email-page {
+                align-items: flex-start;
+                padding: 18px 12px;
+            }
+
+            .email-card {
+                padding: 30px 22px;
+                border-radius: 18px;
+            }
+
+            .email-logo {
+                font-size: 23px;
+            }
+
+            .email-icon {
+                width: 76px;
+                height: 76px;
+                font-size: 36px;
+            }
+
+            .email-card h1 {
+                font-size: 26px;
+            }
+
+            .email-description {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<main class="email-page">
+
+    <div class="email-card">
+
+        <!-- BRAND -->
+        <a href="{% url 'home' %}"
+           class="email-logo">
+            ♻ WasteTrade
+        </a>
+
+        <!-- EMAIL ICON -->
+        <div class="email-icon"
+             aria-hidden="true">
+            ✉️
+        </div>
+
+        <!-- HEADING -->
+        <h1>Check Your Email</h1>
+
+        <p class="email-description">
+            When password recovery is enabled,
+            a secure reset link will be sent
+            if an account exists for the
+            email address provided.
+        </p>
+
+        <!-- PREVIEW NOTICE -->
+        <div class="email-notice"
+             role="status">
+
+            <strong>Design Preview Only</strong>
+
+           
+        </div>
+
+        <!-- BACK TO LOGIN -->
+        <a href="{% url 'login' %}"
+           class="email-button">
+            Back to Login
+        </a>
+
+        <!-- TRY AGAIN -->
+        <a href="{% url 'forgot_password' %}"
+           class="email-secondary">
+            Try Another Email
+        </a>
+
+        <p class="email-footer">
+            © 2026 WasteTrade
+        </p>
+
+    </div>
+
+</main>
+
+</body>
+</html>

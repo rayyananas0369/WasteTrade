@@ -1,0 +1,157 @@
+
+{% extends "admin/base_site.html" %}
+
+{% block breadcrumbs %}{% endblock %}
+{% block content_title %}{% endblock %}
+
+{% block content %}
+
+<div class="wt-dashboard">
+
+    <!-- WELCOME -->
+    <section class="wt-welcome">
+        <div>
+            <span class="wt-eyebrow">
+                ♻ WASTETRADE ADMINISTRATION
+            </span>
+
+            <h1>Welcome back, {{ request.user.username }}!</h1>
+
+            <p>
+                Manage customers, dealer approvals,
+                recyclable waste prices and pickup requests.
+            </p>
+        </div>
+
+        <a class="wt-main-button"
+           href="{% url 'home' %}">
+            View Website →
+        </a>
+    </section>
+
+    <!-- MANAGEMENT CARDS -->
+    <div class="wt-section-heading">
+        <div>
+            <h2>Platform Management</h2>
+            <p>Manage all your WasteTrade operations.</p>
+        </div>
+    </div>
+
+    <div class="wt-admin-grid">
+
+        <a class="wt-admin-card"
+           href="{% url 'admin:auth_user_changelist' %}">
+
+            <span class="wt-card-icon green">👥</span>
+            <h3>User Management</h3>
+
+            <p>
+                View and manage registered
+                customer and dealer accounts.
+            </p>
+
+            <span class="wt-card-link">Manage Users →</span>
+        </a>
+
+        <a class="wt-admin-card"
+           href="{% url 'admin:core_userprofile_changelist' %}">
+
+            <span class="wt-card-icon orange">✅</span>
+            <h3>Dealer Verification</h3>
+
+            <p>
+                Review dealer registration
+                and approve eligible accounts.
+            </p>
+
+            <span class="wt-card-link">Review Dealers →</span>
+        </a>
+
+        <a class="wt-admin-card"
+           href="{% url 'admin:core_wasterate_changelist' %}">
+
+            <span class="wt-card-icon blue">₹</span>
+            <h3>Waste Rate Management</h3>
+
+            <p>
+                Set reference prices for
+                paper, plastic, metal and e-waste.
+            </p>
+
+            <span class="wt-card-link">Manage Prices →</span>
+        </a>
+
+        <a class="wt-admin-card"
+           href="{% url 'admin:core_wastelisting_changelist' %}">
+
+            <span class="wt-card-icon purple">🚚</span>
+            <h3>Waste Listings</h3>
+
+            <p>
+                Monitor customer waste
+                requests and pickup status.
+            </p>
+
+            <span class="wt-card-link">View Listings →</span>
+        </a>
+
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <section class="wt-admin-panel">
+
+        <div class="wt-section-heading">
+            <div>
+                <h2>Quick Actions</h2>
+                <p>Frequently used administration tools.</p>
+            </div>
+        </div>
+
+        <div class="wt-quick-grid">
+
+            <a href="{% url 'admin:core_wasterate_add' %}">
+                <span>＋</span>
+                <div>
+                    <strong>Add Waste Rate</strong>
+                    <small>Configure price per kg</small>
+                </div>
+                <b>→</b>
+            </a>
+
+            <a href="{% url 'admin:core_userprofile_changelist' %}">
+                <span>✓</span>
+                <div>
+                    <strong>Approve Dealer</strong>
+                    <small>Verify dealer registrations</small>
+                </div>
+                <b>→</b>
+            </a>
+
+            <a href="{% url 'admin:core_wastelisting_changelist' %}">
+                <span>▤</span>
+                <div>
+                    <strong>Review Requests</strong>
+                    <small>Manage waste listings</small>
+                </div>
+                <b>→</b>
+            </a>
+
+            <a href="{% url 'admin:auth_user_changelist' %}">
+                <span>♙</span>
+                <div>
+                    <strong>Manage Accounts</strong>
+                    <small>View registered users</small>
+                </div>
+                <b>→</b>
+            </a>
+
+        </div>
+    </section>
+
+    <footer class="wt-admin-footer">
+        WasteTrade © 2026 — Community Waste-to-Value Platform
+    </footer>
+
+</div>
+
+{% endblock %}
